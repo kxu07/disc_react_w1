@@ -52,6 +52,8 @@
 .schoolbell-regular {
   font-family: "Schoolbell", cursive;
   font-weight: 400;
+  font-size: 40px;
+  vertical-align: middle;
   flex-direction: column;
   font-style: bold;
 }
@@ -74,7 +76,6 @@
 
 .polaroid {
   width: 33%;
-  
   float: left;
   top: 0px;
   left: 0px;

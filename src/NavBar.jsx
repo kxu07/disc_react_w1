@@ -1,5 +1,6 @@
 import logo from '/miffy-gram.png'; 
 import miffy_icon from '/miffy_icon.jpg';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
 export default function NavBar() {
     return (
