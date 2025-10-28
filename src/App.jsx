@@ -1,10 +1,6 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
-import logo from '/miffy-gram.png'; 
 import miffy_moon from '/miffy_moon.jpg';
-import miffy_icon from '/miffy_icon.jpg';
 import miffy_birthday from '/miffy_birthday.jpg';
 import miffy_flowers from '/miffy_flowers.jpg';
 import miffy_music from '/miffy_music.jpg';
@@ -13,18 +9,23 @@ import pink_heart from '/pink_heart.webp';
 import boris from '/boris.jpg';
 import melanie from '/melanie.jpg';
 import snuffy from '/snuffy.jpg';
-
+import NavBar from './NavBar';
 
 function App() {
   const [count, setCount] = useState(0)
+  
+  /* only run the effect on the initial render  */
+  useEffect(() => {
+    setTimeout(() => {
+      setCount((count) => count + 1);
+    }, 1000);
+  }, []);
 
   return (
     <>
-      <div className="gram_logo">
-        <img src={logo} alt="miffy-gram logo" width="557" height="157" />
-        <img src={miffy_icon} className="column" alt="miffy-gram icon" height="90"/>
+      <div>
+        <NavBar>testing </NavBar>
       </div>
-
       <div>
         <div className="parent">        
           <div className="left_side">
