@@ -58,16 +58,44 @@ function ClubButton({clubName}) {
 function PostCards({postImage, postText, likeClick}) {
   const [count, setCount] = useState(0);
 
+  const [people, setPeople] = useState([]);
+
+  useEffect(() => {
+    const fetchPeople = async() => {
+      try {
+        const res = await fetch('https://disc-assignment-5-users-api-iyct.onrender.com/api/users');
+        const data = await res.json();
+        (data) => data.forEach(element => {
+          console.log(element)})
+        setPeople(data);
+      } catch (e) {
+        console.error("error getting people", e);
+      }
+    }
+
+    fetchPeople();
+  }, []);
+
   function handleClick() {
     setCount(count + 1);
   }
 
   return (
+    /*
     <div className="post_outer">
       <img src={postImage} className="post_photo" alt={postText} />
       <button onClick={handleClick} className='like_button'><img src={pink_heart} alt="like button" width="25"/> {count} </button>
       <p className="schoobell-regular"><br></br>{postText}</p>
-    </div>
+    </div>*/
+      <div className="post_outer">
+        {people.map((person) => (
+          <div>
+            <img src={person.profilePicture} className="post_photo" alt={person.bio} />
+            <button onClick={handleClick} className='like_button'><img src={pink_heart} alt="like button" width="25"/> {count} </button>
+            <p className="schoobell-regular"><br></br>{person.bio}</p>
+          </div>
+        ))}
+      </div>
 
   );
 }
@@ -82,6 +110,9 @@ function MutualsCard({mutualPic, mutualName, mutualUni, mutualYear}) {
 }
 
 function Home() {
+
+  const [people, setPeople] = useState([])
+
   return (
     <div>
         <div className="parent">        
@@ -114,10 +145,7 @@ function Home() {
           <p className="headers">
             recent posts
           </p>
-          <PostCards postImage={miffy_flowers} postText={"miffy: flower power"}/>
-          <PostCards postImage={miffy_birthday} postText={"miffy: birthday bunny"}/>
-          <PostCards postImage={miffy_music} postText={"miffy: la di da!"}/>
-          <PostCards postImage={miffy_vacation} postText={"miffy: jet setter"}/>
+          <PostCards></PostCards>
         </div>
       </div>
   );

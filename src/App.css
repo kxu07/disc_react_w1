@@ -66,12 +66,30 @@
 
 .parent {
   display: flex;
-  flex-direction: row;
-  
+  flex-direction: row;  
 }
 
 .read-the-docs {
   color: #888;
+}
+
+.rowUsers {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 15px;
+}
+
+/* Create two equal columns that sits next to each other */
+.columnUsers {
+  flex: 25%;
+  padding: 0 15px;
+}
+
+.another-one {
+  display: 'flex';
+  flex-direction: 'row'; 
+  width: '25%'; 
+  gap: '50px'
 }
 
 .polaroid {
@@ -140,8 +158,8 @@
 }
 
 .recent_posts_row {
-  display: inline-block;
-  flex-direction: row;
+  display: block;
+
   margin-left: 25px;
   margin-right: 25px;
   margin-bottom: 50px;
@@ -149,7 +167,7 @@
 
 .post_outer {
   display: inline-block;
-  flex-direction: column;
+  flex-flow: row wrap;
   width: 20%;
   border-radius: 5px;
   font-family: "Schoolbell", cursive;
