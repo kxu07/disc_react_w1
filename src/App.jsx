@@ -63,7 +63,7 @@ function PostCards({postImage, postText, likeClick}) {
   useEffect(() => {
     const fetchPeople = async() => {
       try {
-        const res = await fetch('https://disc-assignment-5-users-api-iyct.onrender.com/api/users');
+        const res = await fetch('http://localhost:3005/users');
         const data = await res.json();
         (data) => data.forEach(element => {
           console.log(element)})
@@ -90,9 +90,9 @@ function PostCards({postImage, postText, likeClick}) {
       <div className="post_outer">
         {people.map((person) => (
           <div>
-            <img src={person.profilePicture} className="post_photo" alt={person.bio} />
+            <img src={boris} className="post_photo" alt={person.first_name} />
             <button onClick={handleClick} className='like_button'><img src={pink_heart} alt="like button" width="25"/> {count} </button>
-            <p className="schoobell-regular"><br></br>{person.bio}</p>
+            <p className="schoobell-regular"><br></br>{person.first_name}<br></br>email: {person.email}</p>
           </div>
         ))}
       </div>
