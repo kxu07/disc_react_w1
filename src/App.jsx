@@ -11,6 +11,9 @@ import boris from '/boris.jpg';
 import melanie from '/melanie.jpg';
 import snuffy from '/snuffy.jpg';
 import NavBar from './NavBar';
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY);
 
 function App() {
   const [count, setCount] = useState(0)
@@ -101,10 +104,30 @@ function PostCards({postImage, postText, likeClick}) {
 }
 
 function MutualsCard({mutualPic, mutualName, mutualUni, mutualYear}) {
+  const supabase = createClient('https://oypsowbblxexlgygijuh.supabase.co', 'sb_publishable_VHJpAu8yUjJJ5sgxmBbN5g_2V3Fa7vs')
+  const [people, setPeople] = useState([]);
+
+  useEffect(() => {
+    async function getProfiles() {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+
+      setPeople(data);
+      if (error) console.error('Error fetching users:', error)
+      else console.log('Users:', data)
+    }
+    getProfiles();
+  }, []);
+
   return (
     <div className="friend_outer"> 
-      <img src={mutualPic} className="friend_pic" alt={mutualName} />
-      <p className="friend_info">{mutualName}<br></br> {mutualUni} ({mutualYear})</p> 
+      {people.map((person) => (
+        <div>
+          <img src={mutualPic} className="friend_pic" alt={mutualName} />
+          <p className="friend_info">{person.first_name} {person.last_name} ({mutualYear})<br></br> {person.email}</p> 
+        </div>
+      ))}
     </div>
   )
 }
@@ -112,6 +135,16 @@ function MutualsCard({mutualPic, mutualName, mutualUni, mutualYear}) {
 function Home() {
 
   const [people, setPeople] = useState([])
+
+  const [instruments, setInstruments] = useState([]);
+  useEffect(() => {
+    getInstruments();
+  }, []);
+
+  async function getInstruments() {
+    const { data } = await supabase.from("instruments").select();
+    setInstruments(data);
+  }
 
   return (
     <div>
@@ -126,6 +159,11 @@ function Home() {
                 university: bruna university <br></br>
                 year: freshman <br></br>
                 bio: she is a little girl rabbit <br></br>
+                instruments: <br></br>
+                {instruments.map((instrument) => (
+                  <ClubButton clubName={instrument.name}/>
+                ))}
+                <br></br>
                 clubs: <br></br>
                 <ClubButton clubName={'dutch club'}/>
                 <ClubButton clubName={'book club'}/>
@@ -136,9 +174,7 @@ function Home() {
 
           <div className="mutual_friends_column">
             <p className="headers">mutual friends </p>
-            <MutualsCard mutualPic={boris} mutualName={"boris"} mutualUni={"purdue"} mutualYear={"sophomore"}/>
-            <MutualsCard mutualPic={melanie} mutualName={"melanie"} mutualUni={"uiuc"} mutualYear={"freshman"}/>
-            <MutualsCard mutualPic={snuffy} mutualName={"snuffy"} mutualUni={"ucla"} mutualYear={"junior"}/>               
+            <MutualsCard mutualPic={boris} mutualName={"boris"} mutualUni={"purdue"} mutualYear={"sophomore"}/>              
           </div> 
         </div>
         <div className="recent_posts_row">
@@ -152,12 +188,21 @@ function Home() {
 }
 
 function About() {
-  return <div className="schoolbell-regular"><h2>About Page</h2></div>;
+  return (
+    <div className="schoolbell-regular">
+      <h2>About Page</h2>
+      <p>I'm too lazy to put any content here</p>
+    </div>
+  )
 }
 
 function Contact() {
-  return <div className="schoolbell-regular"><h2>Contact Page</h2></div>;
-}
+  return (
+    <div className="schoolbell-regular">
+      <h2>Contact Page</h2>
+      <p>I'm still fighting the formatting errors on the home page</p>
+    </div>
+  )}
 
 
 

@@ -128,6 +128,7 @@
 
 .friend_outer {
   float: right;
+  display: inline;
   background-color: rgb(241, 241, 229);
   font-family:"Schoolbell", cursive;
   font-size: 20px;
