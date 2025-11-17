@@ -12,6 +12,10 @@ import melanie from '/melanie.jpg';
 import snuffy from '/snuffy.jpg';
 import NavBar from './NavBar';
 import { createClient } from "@supabase/supabase-js";
+import { Auth } from '@supabase/auth-ui-react'
+import { ThemeSupa } from '@supabase/auth-ui-shared'
+import { useForm } from "react-hook-form";
+
 
 const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY);
 
@@ -32,7 +36,7 @@ function App() {
           <NavBar>testing </NavBar>
           <Link to="/">Profile Page</Link> |{" "}
           <Link to="/about">About</Link> |{" "}
-          <Link to="/contact">Contact</Link>
+          <Link to="/login">Login</Link>
         </div>
       </nav>
 
@@ -40,7 +44,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   )
@@ -196,13 +200,56 @@ function About() {
   )
 }
 
-function Contact() {
-  return (
-    <div className="schoolbell-regular">
-      <h2>Contact Page</h2>
-      <p>I'm still fighting the formatting errors on the home page</p>
-    </div>
-  )}
+function Login() {
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
+
+    const {
+          register,
+          handleSubmit,
+          formState: { errors },
+      } = useForm();
+    const onSubmit = async () => {
+      console.log("email is", email);
+      console.log("pass is", password);
+      const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+});
+    
+    console.log(data);
+    localStorage.setItem("accessToken", data.session.access_token);
+    }
+
+  const [session, setSession] = useState(null)
+    useEffect(() => {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setSession(session)
+      })
+      supabase.auth.onAuthStateChange((_event, session) => {
+        setSession(session)
+      })
+    }, [])
+    return (
+        <>
+            <h2>Login Form</h2>
+            <form className="App" onSubmit={handleSubmit(onSubmit)}>
+                <input
+                  value={email} onChange={e => setEmail(e.target.value)} 
+                />
+                {errors.email && <span style={{ color: "red" }}>*Email* is mandatory</span>}
+
+                <input
+                  value={password} onChange={e => setPassword(e.target.value)} 
+                />
+                {errors.password && <span style={{ color: "red" }}>*Password* is mandatory</span>}
+
+                <input type="submit" style={{ backgroundColor: "#a1eafb" }} />
+            </form>
+        </>
+    );
+  }
+  
 
 
 
